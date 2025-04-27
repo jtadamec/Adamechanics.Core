@@ -8,8 +8,17 @@ using System.Threading.Tasks;
 
 namespace Adamechanics.Collections
 {
+    /// <summary>
+    /// Defines a collection of replacement strings and their substitution values
+    /// </summary>
     public class ReplacementDictionary : IDictionary<string, string>
     {
+        /// <summary>
+        /// Constructs a new <see cref="ReplacementDictionary"/>
+        /// </summary>
+        /// <param name="opening">The opening characters of a replacement key</param>
+        /// <param name="closing">The closing characters of a replacement key</param>
+        /// <exception cref="ArgumentException">One of the provided arguments was a <see langword="null"/> or entirely whitespace string</exception>
         public ReplacementDictionary(string opening, string closing)
         {
             if (string.IsNullOrEmpty(opening))
@@ -50,10 +59,13 @@ namespace Adamechanics.Collections
 
         #region IDictionary
 
+        /// <inheritdoc/>
         public int Count => Dictionary.Count;
 
+        /// <inheritdoc/>
         public bool IsReadOnly => false;
 
+        /// <inheritdoc/>
         public string this[string key] 
         {
             get
@@ -68,26 +80,31 @@ namespace Adamechanics.Collections
             }
         }
 
+        /// <inheritdoc/>
         public void Add(string key, string value)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(key);
             Dictionary.Add(MakeKey(key), value);
         }
 
+        /// <inheritdoc/>
         public bool ContainsKey(string key)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(key);
             return Dictionary.ContainsKey(MakeKey(key));
         }
 
+        /// <inheritdoc/>
         public bool Remove(string key)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(key);
             return Dictionary.Remove(MakeKey(key));
         }
 
+        /// <inheritdoc/>
         public void Clear() => Dictionary.Clear();
 
+        /// <inheritdoc/>
         public bool TryGetValue(string key, [MaybeNullWhen(false)] out string value)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(key);
@@ -96,38 +113,46 @@ namespace Adamechanics.Collections
 
         #region Explicit Interface Implementations 
 
+        /// <inheritdoc/>
         void ICollection<KeyValuePair<string, string>>.Add(KeyValuePair<string, string> item)
         {
             ((ICollection<KeyValuePair<string, string>>)Dictionary).Add(item);
         }
 
+        /// <inheritdoc/>
         bool ICollection<KeyValuePair<string, string>>.Contains(KeyValuePair<string, string> item)
         {
             return ((ICollection<KeyValuePair<string, string>>)Dictionary).Contains(item);
         }
 
+        /// <inheritdoc/>
         void ICollection<KeyValuePair<string, string>>.CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
         {
             ((ICollection<KeyValuePair<string, string>>)Dictionary).CopyTo(array, arrayIndex);
         }
 
+        /// <inheritdoc/>
         bool ICollection<KeyValuePair<string, string>>.Remove(KeyValuePair<string, string> item)
         {
             return ((ICollection<KeyValuePair<string, string>>)Dictionary).Remove(item);
         }
 
+        /// <inheritdoc/>
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
             return ((IEnumerable<KeyValuePair<string, string>>)Dictionary).GetEnumerator();
         }
 
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)Dictionary).GetEnumerator();
         }
 
+        /// <inheritdoc/>
         ICollection<string> IDictionary<string,string>.Keys => Dictionary.Keys;
 
+        /// <inheritdoc/>
         ICollection<string> IDictionary<string,string>.Values => Dictionary.Values;
 
         #endregion
